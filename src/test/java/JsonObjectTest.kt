@@ -47,4 +47,23 @@ class JsonObjectTest {
         val jsonArray = JsonArray(array)
         assertEquals(jsonArray, jsonObject["Key"].array)
     }
+
+    @Test
+    fun shouldGetAtIndex() {
+        val jsonObject = JsonObject(mapOf("name" to "Peter", "age" to 21, "gender" to "Male"))
+        assertEquals("Peter", jsonObject[0].string)
+        assertEquals(21, jsonObject[1].int)
+        assertEquals("Male", jsonObject[2].string)
+        assertNull(jsonObject[3].string)
+    }
+
+    @Test
+    fun shouldAddElement() {
+        val jsonObject = JsonObject()
+        jsonObject["name"] = "Peter"
+        jsonObject["age"] = 21
+
+        assertEquals("Peter", jsonObject["name"].string)
+        assertEquals(21, jsonObject["age"].int)
+    }
 }

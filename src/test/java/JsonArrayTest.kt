@@ -48,4 +48,12 @@ class JsonArrayTest {
 
         jsonArray.forEachIndexed { i, json -> assertEquals(values[i], json.int) }
     }
+
+    @Test
+    fun shouldAddElement() {
+        val jsonArray = JsonArray()
+        jsonArray += "Peter"
+
+        assertEquals("Peter", jsonArray[0].string)
+    }
 }

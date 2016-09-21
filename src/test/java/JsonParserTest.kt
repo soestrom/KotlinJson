@@ -1,5 +1,7 @@
 import org.junit.Assert.*
 import org.junit.Test
+import java.io.File
+import java.nio.charset.Charset
 
 /**
  * Created by Christian on 17/09/2016.
@@ -9,10 +11,21 @@ class JsonParserTest {
 
     @Test
     fun shouldParseJsonString() {
-        val jsonString = "{ \"name\": \"Christian\" }"
+        val jsonString = "{ \"name\": \"Peter\" }"
         val json = JsonParser.parse(jsonString)
+        val jsonObject = json.jsonObject ?: return fail()
+        assertEquals("Peter", jsonObject["name"].string)
+    }
 
-        assertNotNull(json)
+    @Test
+    fun shouldParseJsonFile() {
+        val jsonString = "{ \"name\": \"Peter\" }"
+        val file = File.createTempFile("jsonFile", ".json")
+        file.writeText(jsonString, Charset.defaultCharset())
+
+        val json = JsonParser.parse(file, Charset.defaultCharset())
+        val jsonObject = json.jsonObject ?: return fail()
+        assertEquals("Peter", jsonObject["name"].string)
     }
 
     @Test
@@ -87,4 +100,22 @@ class JsonParserTest {
         val values = arrayOf(1, 2, 3)
         array.forEachIndexed { index, json -> assertEquals(values[index], json.int) }
     }
+
+    @Test
+    fun shouldParseComplexJson() {
+        val jsonString = "{\"people\": [ { \"name\": \"Peter\", \"address\": { \"street\": \"Randersvej 12\", \"city\": \"Aarhus\" } } ] }"
+        val json = JsonParser.parse(jsonString)
+
+        val name = json.jsonObject
+                ?.get("people")
+                ?.array
+                ?.get(0)
+                ?.jsonObject
+                ?.get("name")
+                ?.string
+
+        assertEquals("Peter", name)
+    }
+
+
 }

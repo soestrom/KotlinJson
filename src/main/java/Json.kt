@@ -11,6 +11,9 @@ data class Json(private val value: Any = Any()) {
         return currentObject[key]
     }
 
+    /**
+     * Gives a json object from String to Json.
+     */
     val jsonObject: JsonObject?
         get() {
             if (value !is Map<*, *>) return null
@@ -18,7 +21,9 @@ data class Json(private val value: Any = Any()) {
             val map: Map<String, Any> = mapper.convertValue(value, JsonParser.JsonMapType())
             return JsonObject(map)
         }
-
+    /**
+     * Gives a json array of Json.
+     */
     val array: JsonArray?
         get() {
             if (value !is List<*>) return null
@@ -27,15 +32,27 @@ data class Json(private val value: Any = Any()) {
             return JsonArray(array)
         }
 
+    /**
+     * Gives a String if the value is a String else null
+     */
     val string: String?
         get() = value as? String
 
+    /**
+     * Gives a Int if the value is a Int else null
+     */
     val int: Int?
         get() = value as? Int
 
+    /**
+     * Gives a Boolean if the value is a Boolean else null
+     */
     val boolean: Boolean?
         get() = value as? Boolean
 
+    /**
+     * Gives a Double if the value is a Double else null
+     */
     val double: Double?
         get() = value as? Double
 }
